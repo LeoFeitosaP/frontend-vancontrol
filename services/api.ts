@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const BASE_URL = 'http://10.0.2.2:8080'; // Android emulator
-const BASE_URL = (process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080").replace(/\/$/, ""); // Configure no deploy
+//const BASE_URL = (process.env.EXPO_PUBLIC_API_URL || "http://localhost:8080").replace(/\/$/, ""); // Configure no deploy
 // const BASE_URL = 'http://SEU_IP:8080';   // Celular físico
-// const BASE_URL = 'https://projeto-integrador-3-yazx.onrender.com'; // Deploy
+ const BASE_URL = 'https://projeto-integrador-3-yazx.onrender.com'; // Deploy
 
 async function getToken(): Promise<string | null> {
   return AsyncStorage.getItem("@vancontrol:token");
