@@ -1,3 +1,4 @@
+
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
@@ -17,15 +18,36 @@ import {
     Button,
     C,
     Label,
-    Panel
+    Panel,
 } from '../components/atelier/ui';
 
 import VanPhoneCard from '../components/atelier/VanPhoneCard';
 
+const features = [
+  {
+    num: '01',
+    title: 'Presença sem atrito',
+    text: 'Confirme seus planos em segundos.',
+    icon: 'checkmark-done-outline',
+  },
+  {
+    num: '02',
+    title: 'Uma rota mais clara',
+    text: 'Informações organizadas de ponta a ponta.',
+    icon: 'navigate-outline',
+  },
+  {
+    num: '03',
+    title: 'Gestão inteligente',
+    text: 'Estudantes, motoristas e administradores.',
+    icon: 'grid-outline',
+  },
+];
+
 export default function HomeScreen() {
   const { width } = useWindowDimensions();
-  const wide = width > 850;
 
+  const wide = width > 850;
   const fade = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -34,28 +56,7 @@ export default function HomeScreen() {
       duration: 650,
       useNativeDriver: true,
     }).start();
-  }, []);
-
-  const features = [
-    {
-      num: '01',
-      title: 'Presença sem atrito',
-      text: 'Confirme seus planos em segundos.',
-      icon: 'checkmark-done-outline',
-    },
-    {
-      num: '02',
-      title: 'Uma rota mais clara',
-      text: 'Informações organizadas de ponta a ponta.',
-      icon: 'navigate-outline',
-    },
-    {
-      num: '03',
-      title: 'Gestão inteligente',
-      text: 'Estudantes, motoristas e administradores.',
-      icon: 'grid-outline',
-    },
-  ];
+  }, [fade]);
 
   return (
     <ScrollView
@@ -69,6 +70,7 @@ export default function HomeScreen() {
         paddingVertical: wide ? 36 : 25,
         alignItems: 'center',
       }}
+      showsVerticalScrollIndicator={false}
     >
       <StatusBar barStyle="light-content" />
 
@@ -91,19 +93,21 @@ export default function HomeScreen() {
             paddingBottom: 28,
             borderBottomWidth: 1,
             borderColor: C.line,
+            gap: 12,
           }}
         >
           <Brand />
 
           <Pressable
             onPress={() => router.push('/login')}
-            style={{
+            style={({ pressed }) => ({
               paddingVertical: 11,
               paddingHorizontal: 18,
               borderWidth: 1,
               borderColor: '#444',
               borderRadius: 12,
-            }}
+              opacity: pressed ? 0.7 : 1,
+            })}
           >
             <Text
               style={{
@@ -123,22 +127,31 @@ export default function HomeScreen() {
 
         <View
           style={{
+            width: '100%',
             flexDirection: wide ? 'row' : 'column',
-            gap: wide ? 70 : 40,
-            alignItems: 'center',
+            alignItems: wide ? 'center' : 'stretch',
+            justifyContent: 'space-between',
+            gap: wide ? 50 : 40,
             paddingTop: wide ? 99 : 65,
             paddingBottom: wide ? 100 : 66,
           }}
         >
-          {/* CONTEÚDO PRINCIPAL */}
+          {/* =====================================
+              CONTEÚDO PRINCIPAL
+          ===================================== */}
 
           <View
             style={{
-              flex: 1,
-              width: '100%',
+              flexGrow: wide ? 1 : 0,
+              flexShrink: wide ? 1 : 0,
+              flexBasis: wide ? 0 : 'auto',
+              minWidth: 0,
+              width: wide ? undefined : '100%',
               gap: 25,
             }}
           >
+            {/* TÍTULO */}
+
             <Text
               style={{
                 fontSize: wide ? 75 : 49,
@@ -152,6 +165,8 @@ export default function HomeScreen() {
               mais simples{'\n'}
               até lá.
             </Text>
+
+            {/* DESCRIÇÃO */}
 
             <Text
               style={{
@@ -190,13 +205,19 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* VISUAL DO CELULAR */}
+          {/* =====================================
+              VISUAL DO CELULAR
+          ===================================== */}
 
           <View
             style={{
-              flex: 1,
-              width: '100%',
+              flexGrow: wide ? 1 : 0,
+              flexShrink: wide ? 1 : 0,
+              flexBasis: wide ? 0 : 'auto',
+              minWidth: 0,
+              width: wide ? undefined : '100%',
               maxWidth: 520,
+              alignSelf: 'center',
             }}
           >
             <VanPhoneCard />
@@ -215,19 +236,18 @@ export default function HomeScreen() {
             gap: 22,
           }}
         >
-
-
           <View
             style={{
               flexDirection: wide ? 'row' : 'column',
               gap: 14,
+              width: '100%',
             }}
           >
             {features.map((feature) => (
               <Panel
                 key={feature.num}
                 style={{
-                  flex: 1,
+                  flex: wide ? 1 : undefined,
                   minHeight: 163,
                   justifyContent: 'space-between',
                 }}
@@ -238,6 +258,7 @@ export default function HomeScreen() {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                    alignItems: 'center',
                   }}
                 >
                   <Label>
