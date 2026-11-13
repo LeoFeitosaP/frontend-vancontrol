@@ -23,6 +23,14 @@ type RequestOptions = {
   auth?: boolean;
 };
 
+type PageResponse<T> = {
+  content: T[];
+};
+
+function getPageContent<T>(data: T[] | PageResponse<T>): T[] {
+  return Array.isArray(data) ? data : data.content;
+}
+
 async function request<T>(
   path: string,
   options: RequestOptions = {},
@@ -86,9 +94,9 @@ export const authService = {
 };
 
 export const rotasService = {
-  listar: () => request<any[]>("/rotas"),
+  listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/rotas")),
   buscarPorDestino: (destino: string) =>
-    request<any>(`/rotas/${encodeURIComponent(destino)}`),
+    request<any[] | PageResponse<any>>(`/rotas/${encodeURIComponent(destino)}`).then(getPageContent),
   criar: (payload: any) => request("/rotas", { method: "POST", body: payload }),
   atualizarDescricao: (id: string, novaDescricao: string) =>
     request(`/rotas/${id}/descricao`, {
@@ -99,7 +107,7 @@ export const rotasService = {
 };
 
 export const veiculosService = {
-  listar: () => request<any[]>("/veiculos"),
+  listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/veiculos")),
   buscarPorPlaca: (placa: string) => request<any>(`/veiculos/${encodeURIComponent(placa)}`),
   cadastrar: (payload: any) =>
     request("/veiculos", { method: "POST", body: payload }),
@@ -110,7 +118,7 @@ export const veiculosService = {
 };
 
 export const motoristasService = {
-  listar: () => request<any[]>("/motoristas"),
+  listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/motoristas")),
   buscarPorCpf: (cpf: string) => request<any>(`/motoristas/${cpf}`),
   cadastrar: (payload: any) =>
     request("/motoristas", { method: "POST", body: payload }),
@@ -121,7 +129,7 @@ export const motoristasService = {
 };
 
 export const passageirosService = {
-  listar: () => request<any[]>("/passageiros"),
+  listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/passageiros")),
   buscarPorCpf: (cpf: string) => request<any>(`/passageiros/${cpf}`),
   atualizar: (cpf: string, payload: any) =>
     request(`/passageiros/${cpf}`, { method: "PUT", body: payload }),
@@ -130,7 +138,7 @@ export const passageirosService = {
 };
 
 export const viagensService = {
-  listar: () => request<any[]>("/viagens"),
+  listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/viagens")),
   buscarPorCodigo: (codigo: string) => request<any>(`/viagens/${encodeURIComponent(codigo)}`),
   criar: (payload: any) =>
     request("/viagens", { method: "POST", body: payload }),
@@ -143,12 +151,13 @@ export const viagensService = {
 export const pagamentosService = {
   buscar: (id: string) => request<any>(`/pagamentos/${encodeURIComponent(id)}`),
   listarPorPassageiro: (id: string) =>
-    request<any[]>(`/pagamentos/passageiro/${encodeURIComponent(id)}`),
+    request<any[] | PageResponse<any>>(`/pagamentos/passageiro/${encodeURIComponent(id)}`).then(getPageContent),
   listarPorCompetencia: (competencia: string) =>
-    request<any[]>(
+    request<any[] | PageResponse<any>>(
       `/pagamentos?competencia=${encodeURIComponent(competencia)}`,
-    ),
-  meusPagamentos: () => request<any[]>("/pagamentos/meus-pagamentos"),
+    ).then(getPageContent),
+  meusPagamentos: async () =>
+    getPageContent(await request<any[] | PageResponse<any>>("/pagamentos/meus-pagamentos")),
   criar: (payload: any) =>
     request("/pagamentos", { method: "POST", body: payload }),
   atualizarStatus: (id: string, status: string, dataPagamento?: string) =>
