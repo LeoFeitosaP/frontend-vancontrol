@@ -1,147 +1,35 @@
-import { Tabs } from 'expo-router';
-import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
+import React from 'react';
+import { Tabs,router } from 'expo-router';
+import { View, Text, Pressable, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import Svg, { Path, Circle } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { C,Brand,Label } from '../../components/atelier/ui';
+import { useAuth } from '../../hooks/useAuth';
 
-// ── ÍCONES EXISTENTES ──
-function IconHome({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke={color} strokeWidth={1.8} strokeLinejoin="round"/>
-      <Path d="M9 21V12h6v9" stroke={color} strokeWidth={1.8} strokeLinecap="round"/>
-    </Svg>
-  );
+const PRIMARY = [
+ {name:'index',label:'Visão geral',mobile:'Início',icon:'grid-outline'},
+ {name:'rotas',label:'Rotas',mobile:'Rotas',icon:'map-outline'},
+ {name:'veiculos',label:'Veículos',mobile:'Frota',icon:'bus-outline'},
+ {name:'perfil',label:'Minha conta',mobile:'Perfil',icon:'person-outline'},
+] as const;
+function NavItem({title,icon,active,onPress,compact=false}:{title:string,icon:any,active:boolean,onPress:()=>void,compact?:boolean}){
+ return <Pressable onPress={onPress} style={({pressed})=>({flexDirection:compact?'column':'row',alignItems:'center',justifyContent:compact?'center':'flex-start',gap:compact?5:14,paddingHorizontal:compact?6:15,paddingVertical:compact?12:15,borderRadius:12,backgroundColor:active?'#292929':'transparent',borderWidth:active?1:0,borderColor:'#454545',opacity:pressed?.7:1,flex:compact?1:undefined})}><Ionicons name={icon} size={compact?21:18} color={active?C.white:C.muted}/><Text style={{color:active?C.white:C.muted,fontSize:compact?10:13,fontWeight:active?'800':'600'}}>{title}</Text>{!compact&&active&&<View style={{marginLeft:'auto',height:5,width:5,backgroundColor:C.white,borderRadius:4}}/>}</Pressable>
 }
-function IconRoutes({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 17c0-1.1.9-2 2-2h14a2 2 0 010 4H5a2 2 0 01-2-2z" stroke={color} strokeWidth={1.8}/>
-      <Path d="M3 7c0-1.1.9-2 2-2h8a2 2 0 010 4H5a2 2 0 01-2-2z" stroke={color} strokeWidth={1.8}/>
-      <Circle cx="19" cy="7" r="2" stroke={color} strokeWidth={1.8}/>
-    </Svg>
-  );
+function AtelierTabBar({state,navigation}:BottomTabBarProps){const {width}=useWindowDimensions(),desktop=width>=950,insets=useSafeAreaInsets();const {user}=useAuth();
+ const to=(name:string)=>{const route=state.routes.find(r=>r.name===name);if(route){const event=navigation.emit({type:'tabPress',target:route.key,canPreventDefault:true});if(!event.defaultPrevented)navigation.navigate(name)}};
+ const isActive=(name:string)=>state.routes[state.index]?.name===name;
+ if(!desktop)return <View style={{backgroundColor:'#111',borderTopWidth:1,borderTopColor:'#303030',paddingTop:7,paddingBottom:Math.max(7,insets.bottom),paddingHorizontal:8,flexDirection:'row',justifyContent:'space-around'}}>{PRIMARY.map(item=><NavItem key={item.name} compact active={isActive(item.name)} icon={item.icon} title={item.mobile} onPress={()=>to(item.name)}/>)}</View>;
+ return <View style={{width:240,backgroundColor:'#0E0E0E',borderRightWidth:1,borderRightColor:'#292929',paddingTop:36,paddingHorizontal:16,paddingBottom:24,justifyContent:'space-between'}}><View><View style={{paddingHorizontal:10,paddingBottom:50}}><Brand/></View><View style={{paddingHorizontal:13,marginBottom:11}}><Label>WORKSPACE</Label></View><View style={{gap:5}}>{PRIMARY.map(item=><NavItem key={item.name} title={item.label} active={isActive(item.name)} icon={item.icon} onPress={()=>to(item.name)}/>)}</View><View style={{height:1,backgroundColor:'#292929',marginVertical:30}}/><View style={{paddingHorizontal:13,marginBottom:12}}><Label>OPERAÇÕES</Label></View><View style={{gap:5}}><NavItem title="Viagens" icon="navigate-outline" active={isActive('viagens')} onPress={()=>to('viagens')}/><NavItem title="Financeiro" icon="card-outline" active={isActive('pagamentos')} onPress={()=>to('pagamentos')}/>{user?.role==='ADMIN'&&<NavItem title="Motoristas" icon="people-outline" active={isActive('motoristaAdmin')} onPress={()=>to('motoristaAdmin')}/>}</View></View><View style={{borderTopWidth:1,borderColor:'#292929',paddingTop:20,paddingHorizontal:12,flexDirection:'row',alignItems:'center',gap:11}}><View style={{height:36,width:36,borderRadius:11,backgroundColor:'#313131',borderWidth:1,borderColor:'#555',alignItems:'center',justifyContent:'center'}}><Text style={{color:C.white,fontWeight:'800'}}>{(user?.name||'V').charAt(0).toUpperCase()}</Text></View><View style={{flex:1}}><Text numberOfLines={1} style={{fontSize:12,color:C.white,fontWeight:'800'}}>{user?.name||'VanControl'}</Text><Text style={{fontSize:10,color:C.muted,marginTop:4}}>{user?.role||'CONTA'}</Text></View></View></View>
 }
-function IconTrips({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v9a2 2 0 01-2 2h-2" stroke={color} strokeWidth={1.8} strokeLinejoin="round"/>
-      <Circle cx="7.5" cy="17.5" r="2.5" stroke={color} strokeWidth={1.8}/>
-      <Circle cx="17.5" cy="17.5" r="2.5" stroke={color} strokeWidth={1.8}/>
-    </Svg>
-  );
-}
-function IconVehicles({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 12h18v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5z" stroke={color} strokeWidth={1.8} strokeLinejoin="round"/>
-      <Path d="M5 12V8a2 2 0 012-2h10a2 2 0 012 2v4" stroke={color} strokeWidth={1.8} strokeLinejoin="round"/>
-      <Circle cx="7" cy="18" r="1.5" stroke={color} strokeWidth={1.8}/>
-      <Circle cx="17" cy="18" r="1.5" stroke={color} strokeWidth={1.8}/>
-    </Svg>
-  );
-}
-function IconProfile({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Circle cx="12" cy="8" r="4" stroke={color} strokeWidth={1.8}/>
-      <Path d="M4 20c0-3.314 3.582-6 8-6s8 2.686 8 6" stroke={color} strokeWidth={1.8} strokeLinecap="round"/>
-    </Svg>
-  );
-}
-
-// ── NOVOS ÍCONES PARA AS TELAS DE MOTORISTA ──
-function IconShield({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke={color} strokeWidth={1.8} strokeLinejoin="round"/>
-    </Svg>
-  );
-}
-function IconID({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z" stroke={color} strokeWidth={1.8} />
-      <Circle cx="8" cy="11" r="2" stroke={color} strokeWidth={1.8} />
-      <Path d="M4 16h8" stroke={color} strokeWidth={1.8} strokeLinecap="round"/>
-    </Svg>
-  );
-}
-function IconPeople({ color, size = 22 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Circle cx="9" cy="7" r="4" stroke={color} strokeWidth={1.8}/>
-      <Path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke={color} strokeWidth={1.8}/>
-      <Circle cx="16" cy="10" r="3" stroke={color} strokeWidth={1.8}/>
-      <Path d="M15 15.28a4 4 0 013.72 3.72V21" stroke={color} strokeWidth={1.8}/>
-    </Svg>
-  );
-}
-
-// ── AGORA TEMOS TODAS AS 8 TELAS CADASTRADAS AQUI ──
-const TABS = [
-  { name: 'index',               label: 'Início',     Icon: IconHome },
-  { name: 'rotas',               label: 'Rotas',      Icon: IconRoutes },
-  { name: 'viagens',             label: 'Viagens',    Icon: IconTrips },
-  { name: 'veiculos',            label: 'Veículos',   Icon: IconVehicles },
-  { name: 'perfil',              label: 'Perfil',     Icon: IconProfile },
-  { name: 'motoristaAdmin',      label: 'Motorista Admin',      Icon: IconShield },
-  { name: 'motoristaMotorista',  label: 'Motorista dados', Icon: IconID },
-  { name: 'motoristaPassageiro', label: 'Motoristas', Icon: IconPeople },
-];
-
-function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
-  const insets = useSafeAreaInsets();
-  return (
-    <View style={[styles.tabBar, { paddingBottom: insets.bottom || 12 }]}>
-      {state.routes.map((route, index) => {
-        const tab = TABS.find(t => t.name === route.name);
-        
-        // Proteção: Se a rota não estiver na lista TABS, ele não desenha nada
-        if (!tab) return null;
-
-        const isFocused = state.index === index;
-        const color = isFocused ? '#2563eb' : '#64748b';
-        
-        const onPress = () => {
-          const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-          if (!isFocused && !event.defaultPrevented) navigation.navigate(route.name);
-        };
-        
-        return (
-          <TouchableOpacity key={route.key} onPress={onPress} activeOpacity={0.7} style={styles.tabItem}>
-            {isFocused && <View style={styles.activePill} />}
-            <View style={[styles.iconWrap, isFocused && styles.iconWrapActive]}>
-              <tab.Icon color={color} size={21} />
-            </View>
-            <Text style={[styles.tabLabel, { color }]}>{tab.label}</Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
-
-export default function MainLayout() {
-  return (
-    <Tabs tabBar={(props) => <CustomTabBar {...props} />} screenOptions={{ headerShown: false }}>
-      <Tabs.Screen name="index"      options={{ title: 'Início' }} />
-      <Tabs.Screen name="rotas"      options={{ title: 'Rotas' }} />
-      <Tabs.Screen name="viagens"    options={{ title: 'Viagens' }} />
-      <Tabs.Screen name="veiculos"   options={{ title: 'Veículos' }} />
-      <Tabs.Screen name="perfil"     options={{ title: 'Perfil' }} />
-      <Tabs.Screen name="motoristaAdmin"      options={{ title: 'Motoristas Admin' }} />
-      <Tabs.Screen name="motoristaMotorista"  options={{ title: 'Meus Dados' }} />
-      <Tabs.Screen name="motoristaPassageiro" options={{ title: 'Motoristas' }} />
-    </Tabs>
-  );
-}
-
-const styles = StyleSheet.create({
-  tabBar:        { flexDirection: 'row', backgroundColor: 'rgba(8,14,36,0.97)', borderTopWidth: 0.5, borderTopColor: 'rgba(255,255,255,0.08)', paddingTop: 10, paddingHorizontal: 8, ...Platform.select({ ios: { shadowColor: '#000', shadowOffset: { width: 0, height: -4 }, shadowOpacity: 0.3, shadowRadius: 12 }, android: { elevation: 20 } }) },
-  tabItem:       { flex: 1, alignItems: 'center', position: 'relative', paddingTop: 4, gap: 4 },
-  activePill:    { position: 'absolute', top: -10, width: 32, height: 3, borderRadius: 2, backgroundColor: '#2563eb' },
-  iconWrap:      { width: 40, height: 32, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
-  iconWrapActive:{ backgroundColor: 'rgba(37,99,235,0.15)' },
-  tabLabel:      { fontSize: 10, fontWeight: '500', letterSpacing: 0.2 },
-});
+export default function MainLayout(){const {width}=useWindowDimensions();return <Tabs tabBar={(props)=><AtelierTabBar {...props}/>} screenOptions={{headerShown:false,tabBarPosition:width>=950?'left':'bottom',sceneStyle:{backgroundColor:C.bg}}}>
+ <Tabs.Screen name="index" options={{title:'Visão geral'}}/>
+ <Tabs.Screen name="rotas" options={{title:'Rotas'}}/>
+ <Tabs.Screen name="veiculos" options={{title:'Veículos'}}/>
+ <Tabs.Screen name="perfil" options={{title:'Perfil'}}/>
+ <Tabs.Screen name="viagens" options={{title:'Viagens',href:null}}/>
+ <Tabs.Screen name="pagamentos" options={{title:'Pagamentos',href:null}}/>
+ <Tabs.Screen name="motoristaAdmin" options={{title:'Motoristas Admin',href:null}}/>
+ <Tabs.Screen name="motoristaMotorista" options={{title:'Meus Dados',href:null}}/>
+ <Tabs.Screen name="motoristaPassageiro" options={{title:'Motoristas',href:null}}/>
+ </Tabs>}

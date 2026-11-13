@@ -13,7 +13,7 @@ export default function MotoristaAdminPage() {
       <View style={styles.deniedContainer}>
         
         <View style={styles.deniedIconWrap}>
-          <Ionicons name="shield-half-outline" size={56} color="#ef4444" />
+          <Ionicons name="shield-half-outline" size={56} color="#EEEEEE" />
         </View>
         
         <Text style={styles.deniedTitle}>Acesso Restrito</Text>
@@ -44,22 +44,22 @@ export default function MotoristaAdminPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#060c22",
+    backgroundColor: "#111111",
   },
   deniedContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#060c22",
+    backgroundColor: "#111111",
     paddingHorizontal: 32,
   },
   deniedIconWrap: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: "rgba(239, 68, 68, 0.08)",
+    backgroundColor: "rgba(125,125,125,0.08)",
     borderWidth: 1.5,
-    borderColor: "rgba(239, 68, 68, 0.3)",
+    borderColor: "rgba(125,125,125,0.3)",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   deniedMessage: {
     fontSize: 15,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     textAlign: "center",
     marginBottom: 32,
     lineHeight: 22,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#0ea5e9",
+    backgroundColor: "#EEEEEE",
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 12,

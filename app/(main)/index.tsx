@@ -9,8 +9,8 @@ export default function DashboardScreen() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#050a1e' }}>
-        <ActivityIndicator color="#2563eb" size="large" />
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#111111' }}>
+        <ActivityIndicator color="#EEEEEE" size="large" />
       </View>
     );
   }

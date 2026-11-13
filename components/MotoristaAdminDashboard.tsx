@@ -234,7 +234,7 @@ export default function MotoristaAdminDashboard() {
   return (
     <View style={styles.container}>
       {/* ── HEADER COM AÇÕES ── */}
-      <LinearGradient colors={["#100d28", "#070e28"]} style={styles.header}>
+      <LinearGradient colors={["#111111", "#111111"]} style={styles.header}>
         <Text style={styles.title}>Gerenciamento de Motoristas</Text>
         <Text style={styles.subtitle}>
           Total: {motoristas.length} motorista(s)
@@ -242,7 +242,7 @@ export default function MotoristaAdminDashboard() {
 
         <View style={styles.actionGrid}>
           <TouchableOpacity
-            style={[styles.actionBtn, { backgroundColor: "#22c55e" }]}
+            style={[styles.actionBtn, { backgroundColor: "#C4C4C4" }]}
             onPress={() => {
               setModalType("cadastro");
               setModalVisible(true);
@@ -253,7 +253,7 @@ export default function MotoristaAdminDashboard() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionBtn, { backgroundColor: "#2563eb" }]}
+            style={[styles.actionBtn, { backgroundColor: "#EEEEEE" }]}
             onPress={() => {
               setModalType("buscar");
               setModalVisible(true);
@@ -264,7 +264,7 @@ export default function MotoristaAdminDashboard() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.actionBtn, { backgroundColor: "#0ea5e9" }]}
+            style={[styles.actionBtn, { backgroundColor: "#EEEEEE" }]}
             onPress={() => {
               setModalType("atualizar");
               setModalVisible(true);
@@ -279,11 +279,11 @@ export default function MotoristaAdminDashboard() {
       {/* ── LISTA DE MOTORISTAS ── */}
       {loading ? (
         <View style={styles.centerContent}>
-          <ActivityIndicator color="#a78bfa" size="large" />
+          <ActivityIndicator color="#EEEEEE" size="large" />
         </View>
       ) : motoristas.length === 0 ? (
         <View style={styles.centerContent}>
-          <Ionicons name="people-outline" size={48} color="#64748b" />
+          <Ionicons name="people-outline" size={48} color="#989898" />
           <Text style={styles.emptyText}>Nenhum motorista cadastrado</Text>
         </View>
       ) : (
@@ -295,7 +295,7 @@ export default function MotoristaAdminDashboard() {
           {motoristas.map((motorista, index) => (
             <LinearGradient
               key={index}
-              colors={["rgba(30,41,59,0.5)", "rgba(15,23,42,0.5)"]}
+              colors={["rgba(43,43,43,0.5)", "rgba(27,27,27,0.5)"]}
               style={styles.motoristaCard}
             >
               <View style={styles.cardHeader}>
@@ -306,7 +306,7 @@ export default function MotoristaAdminDashboard() {
                 <View
                   style={[
                     styles.categoryBadge,
-                    { backgroundColor: "#2563eb30" },
+                    { backgroundColor: "#44444430" },
                   ]}
                 >
                   <Text style={styles.categoryText}>
@@ -337,7 +337,7 @@ export default function MotoristaAdminDashboard() {
 
               <View style={styles.cardActions}>
                 <TouchableOpacity
-                  style={[styles.actionIcon, { backgroundColor: "#0ea5e930" }]}
+                  style={[styles.actionIcon, { backgroundColor: "#44444430" }]}
                   onPress={() => {
                     setSelectedMotorista(motorista);
                     setUpdatePhone(motorista.telefone);
@@ -345,14 +345,14 @@ export default function MotoristaAdminDashboard() {
                     setModalVisible(true);
                   }}
                 >
-                  <Ionicons name="create-outline" size={18} color="#0ea5e9" />
+                  <Ionicons name="create-outline" size={18} color="#EEEEEE" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={[styles.actionIcon, { backgroundColor: "#ef444430" }]}
                   onPress={() => handleDelete(motorista.cpf)}
                 >
-                  <Ionicons name="trash-outline" size={18} color="#ef4444" />
+                  <Ionicons name="trash-outline" size={18} color="#EEEEEE" />
                 </TouchableOpacity>
               </View>
             </LinearGradient>
@@ -393,14 +393,14 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="Nome Completo"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     value={form.nome}
                     onChangeText={(text) => setForm({ ...form, nome: text })}
                   />
                   <TextInput
                     style={styles.input}
                     placeholder="Email"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     keyboardType="email-address"
                     value={form.email}
                     onChangeText={(text) => setForm({ ...form, email: text })}
@@ -408,7 +408,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="CPF (apenas números)"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     keyboardType="numeric"
                     value={form.cpf}
                     onChangeText={(text) => setForm({ ...form, cpf: text })}
@@ -416,7 +416,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="CNH (11 dígitos)"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     keyboardType="numeric"
                     value={form.cnh}
                     onChangeText={(text) => setForm({ ...form, cnh: text })}
@@ -424,7 +424,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="Categoria CNH (A, B, C, D, E, AB, AC, AD, AE)"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     value={form.categoriaCnh}
                     onChangeText={(text) =>
                       setForm({ ...form, categoriaCnh: text })
@@ -433,7 +433,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="Data Validade CNH (yyyy/MM)"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     value={form.dataValidadeCnh}
                     onChangeText={(text) =>
                       setForm({ ...form, dataValidadeCnh: text })
@@ -442,7 +442,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="Telefone (DD) XXXXX-XXXX"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     value={form.telefone}
                     onChangeText={(text) =>
                       setForm({ ...form, telefone: text })
@@ -451,7 +451,7 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="Senha"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     secureTextEntry
                     value={form.password}
                     onChangeText={(text) =>
@@ -460,7 +460,7 @@ export default function MotoristaAdminDashboard() {
                   />
 
                   <TouchableOpacity
-                    style={[styles.submitBtn, { backgroundColor: "#22c55e" }]}
+                    style={[styles.submitBtn, { backgroundColor: "#C4C4C4" }]}
                     onPress={handleCadastro}
                   >
                     <Text style={styles.submitBtnText}>Cadastrar</Text>
@@ -474,13 +474,13 @@ export default function MotoristaAdminDashboard() {
                   <TextInput
                     style={styles.input}
                     placeholder="CPF do motorista"
-                    placeholderTextColor="#64748b"
+                    placeholderTextColor="#989898"
                     keyboardType="numeric"
                     value={searchCpf}
                     onChangeText={setSearchCpf}
                   />
                   <TouchableOpacity
-                    style={[styles.submitBtn, { backgroundColor: "#2563eb" }]}
+                    style={[styles.submitBtn, { backgroundColor: "#EEEEEE" }]}
                     onPress={handleBuscar}
                   >
                     <Text style={styles.submitBtnText}>Buscar</Text>
@@ -538,13 +538,13 @@ export default function MotoristaAdminDashboard() {
                       <TextInput
                         style={styles.input}
                         placeholder="CPF do motorista"
-                        placeholderTextColor="#64748b"
+                        placeholderTextColor="#989898"
                         keyboardType="numeric"
                         value={searchCpf}
                         onChangeText={setSearchCpf}
                       />
                       <TouchableOpacity
-                        style={[styles.submitBtn, { backgroundColor: "#2563eb" }]}
+                        style={[styles.submitBtn, { backgroundColor: "#EEEEEE" }]}
                         onPress={handleBuscar}
                       >
                         <Text style={styles.submitBtnText}>Buscar</Text>
@@ -566,20 +566,20 @@ export default function MotoristaAdminDashboard() {
                       <TextInput
                         style={styles.input}
                         placeholder="Novo Telefone (DD) XXXXX-XXXX"
-                        placeholderTextColor="#64748b"
+                        placeholderTextColor="#989898"
                         value={updatePhone}
                         onChangeText={setUpdatePhone}
                       />
 
                       <TouchableOpacity
-                        style={[styles.submitBtn, { backgroundColor: "#0ea5e9" }]}
+                        style={[styles.submitBtn, { backgroundColor: "#EEEEEE" }]}
                         onPress={handleAtualizarTelefone}
                       >
                         <Text style={styles.submitBtnText}>Atualizar</Text>
                       </TouchableOpacity>
 
                       <TouchableOpacity
-                        style={[styles.submitBtn, { backgroundColor: "#64748b" }]}
+                        style={[styles.submitBtn, { backgroundColor: "#989898" }]}
                         onPress={() => {
                           setSelectedMotorista(null);
                           setSearchCpf("");
@@ -645,7 +645,7 @@ export default function MotoristaAdminDashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#060c22",
+    backgroundColor: "#111111",
   },
   header: {
     padding: 20,
@@ -660,7 +660,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 13,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 16,
   },
   actionGrid: {
@@ -689,7 +689,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   emptyText: {
-    color: "#94a3b8",
+    color: "#C4C4C4",
     fontSize: 14,
   },
   listContainer: {
@@ -703,7 +703,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.1)",
+    borderColor: "rgba(165,165,165,0.1)",
   },
   cardHeader: {
     flexDirection: "row",
@@ -722,7 +722,7 @@ const styles = StyleSheet.create({
   },
   motoristaCpf: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   categoryBadge: {
     paddingHorizontal: 10,
@@ -731,7 +731,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 11,
-    color: "#2563eb",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   detailsRow: {
@@ -744,7 +744,7 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 11,
-    color: "#64748b",
+    color: "#989898",
     marginBottom: 2,
   },
   detailValue: {
@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "rgba(148,163,184,0.1)",
+    borderTopColor: "rgba(165,165,165,0.1)",
   },
   actionIcon: {
     flex: 1,
@@ -772,7 +772,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#0f1728",
+    backgroundColor: "#111111",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingTop: 16,
@@ -794,9 +794,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    backgroundColor: "rgba(30,41,59,0.7)",
+    backgroundColor: "rgba(43,43,43,0.7)",
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.2)",
+    borderColor: "rgba(165,165,165,0.2)",
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -815,15 +815,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   resultBox: {
-    backgroundColor: "rgba(30,41,59,0.5)",
+    backgroundColor: "rgba(43,43,43,0.5)",
     borderWidth: 1,
-    borderColor: "rgba(37,99,235,0.3)",
+    borderColor: "rgba(124,124,124,0.3)",
     borderRadius: 8,
     padding: 12,
     marginTop: 12,
   },
   resultTitle: {
-    color: "#2563eb",
+    color: "#EEEEEE",
     fontWeight: "600",
     marginBottom: 10,
   },
@@ -832,7 +832,7 @@ const styles = StyleSheet.create({
   },
   resultLabel: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 2,
   },
   resultValue: {
@@ -841,21 +841,21 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   selectedBox: {
-    backgroundColor: "rgba(34,197,94,0.1)",
+    backgroundColor: "rgba(108,108,108,0.1)",
     borderWidth: 1,
-    borderColor: "rgba(34,197,94,0.3)",
+    borderColor: "rgba(108,108,108,0.3)",
     borderRadius: 8,
     padding: 12,
     marginBottom: 12,
   },
   selectedLabel: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 4,
   },
   selectedValue: {
     fontSize: 14,
-    color: "#22c55e",
+    color: "#C4C4C4",
     fontWeight: "600",
   },
 
@@ -867,7 +867,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deleteModalCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#111111",
     borderRadius: 12,
     padding: 24,
     width: "90%",
@@ -882,7 +882,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   deleteModalText: {
-    color: "#94a3b8",
+    color: "#C4C4C4",
     fontSize: 14,
     marginBottom: 24,
   },
@@ -898,7 +898,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   deleteModalButtonConfirm: {
-    backgroundColor: "#ef4444",
+    backgroundColor: "#EEEEEE",
   },
   deleteModalButtonConfirmText: {
     color: "#fff",
@@ -906,7 +906,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   deleteModalButtonCancel: {
-    backgroundColor: "#1f2937",
+    backgroundColor: "#111111",
   },
   deleteModalButtonCancelText: {
     color: "#f8fafc",

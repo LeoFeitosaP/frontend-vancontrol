@@ -128,7 +128,7 @@ export default function MotoristaMotoristaDashboard() {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator color="#a78bfa" size="large" />
+        <ActivityIndicator color="#EEEEEE" size="large" />
       </View>
     );
   }
@@ -136,7 +136,7 @@ export default function MotoristaMotoristaDashboard() {
   if (!motorista) {
     return (
       <View style={styles.center}>
-        <Ionicons name="alert-circle-outline" size={48} color="#ef4444" />
+        <Ionicons name="alert-circle-outline" size={48} color="#EEEEEE" />
         <Text style={styles.errorText}>Dados não disponíveis</Text>
       </View>
     );
@@ -145,12 +145,12 @@ export default function MotoristaMotoristaDashboard() {
   return (
     <>
       <Animated.ScrollView
-        style={{ flex: 1, opacity: fadeAnim, backgroundColor: "#060c22" }}
+        style={{ flex: 1, opacity: fadeAnim, backgroundColor: "#111111" }}
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
         {/* ── HEADER ── */}
-        <LinearGradient colors={["#100d28", "#070e28"]} style={styles.hero}>
+        <LinearGradient colors={["#111111", "#111111"]} style={styles.hero}>
           <View style={styles.glowCircle} />
 
           <Animated.View
@@ -158,7 +158,7 @@ export default function MotoristaMotoristaDashboard() {
           >
             <View style={styles.heroText}>
               <View style={styles.roleTag}>
-                <Ionicons name="car-outline" size={12} color="#c4b5fd" />
+                <Ionicons name="car-outline" size={12} color="#EEEEEE" />
                 <Text style={styles.roleText}>Motorista</Text>
               </View>
               <Text style={styles.heroName}>{motorista.nome}</Text>
@@ -177,7 +177,7 @@ export default function MotoristaMotoristaDashboard() {
           <Text style={styles.sectionLabel}>Informações Pessoais</Text>
 
           <LinearGradient
-            colors={["rgba(30,41,59,0.5)", "rgba(15,23,42,0.5)"]}
+            colors={["rgba(43,43,43,0.5)", "rgba(27,27,27,0.5)"]}
             style={styles.card}
           >
             <View style={styles.infoRow}>
@@ -207,7 +207,7 @@ export default function MotoristaMotoristaDashboard() {
                 style={styles.editIcon}
                 onPress={abrirModal}
               >
-                <Ionicons name="create-outline" size={20} color="#0ea5e9" />
+                <Ionicons name="create-outline" size={20} color="#EEEEEE" />
               </TouchableOpacity>
             </View>
           </LinearGradient>
@@ -218,7 +218,7 @@ export default function MotoristaMotoristaDashboard() {
           <Text style={styles.sectionLabel}>Informações da CNH</Text>
 
           <LinearGradient
-            colors={["rgba(30,41,59,0.5)", "rgba(15,23,42,0.5)"]}
+            colors={["rgba(43,43,43,0.5)", "rgba(27,27,27,0.5)"]}
             style={styles.card}
           >
             <View style={styles.infoRow}>
@@ -248,7 +248,7 @@ export default function MotoristaMotoristaDashboard() {
             <View style={styles.divider} />
 
             <View style={styles.statusRow}>
-              <Ionicons name="checkmark-circle-outline" size={20} color="#22c55e" />
+              <Ionicons name="checkmark-circle-outline" size={20} color="#C4C4C4" />
               <Text style={styles.statusText}>CNH ativa e válida</Text>
             </View>
           </LinearGradient>
@@ -259,17 +259,17 @@ export default function MotoristaMotoristaDashboard() {
           <Text style={styles.sectionLabel}>Ações Disponíveis</Text>
 
           <TouchableOpacity
-            style={[styles.actionButton, { backgroundColor: "#0ea5e930" }]}
+            style={[styles.actionButton, { backgroundColor: "#44444430" }]}
             onPress={abrirModal}
           >
             <View style={styles.actionContent}>
-              <Ionicons name="call-outline" size={20} color="#0ea5e9" />
+              <Ionicons name="call-outline" size={20} color="#EEEEEE" />
               <View style={styles.actionText}>
                 <Text style={styles.actionLabel}>Atualizar Telefone</Text>
                 <Text style={styles.actionDesc}>Editar seu número de contato</Text>
               </View>
             </View>
-            <Ionicons name="chevron-forward-outline" size={20} color="#64748b" />
+            <Ionicons name="chevron-forward-outline" size={20} color="#989898" />
           </TouchableOpacity>
         </View>
       </Animated.ScrollView>
@@ -295,14 +295,14 @@ export default function MotoristaMotoristaDashboard() {
               {/* Caixas de Alerta Embutidas na Interface */}
               {errorMessage && (
                 <View style={styles.inlineErrorBox}>
-                  <Ionicons name="alert-circle" size={16} color="#ef4444" />
+                  <Ionicons name="alert-circle" size={16} color="#EEEEEE" />
                   <Text style={styles.inlineErrorText}>{errorMessage}</Text>
                 </View>
               )}
 
               {statusMessage && (
                 <View style={styles.inlineSuccessBox}>
-                  <Ionicons name="checkmark-circle" size={16} color="#22c55e" />
+                  <Ionicons name="checkmark-circle" size={16} color="#C4C4C4" />
                   <Text style={styles.inlineSuccessText}>{statusMessage}</Text>
                 </View>
               )}
@@ -310,7 +310,7 @@ export default function MotoristaMotoristaDashboard() {
               <TextInput
                 style={styles.input}
                 placeholder="Novo Telefone (DD) XXXXX-XXXX"
-                placeholderTextColor="#64748b"
+                placeholderTextColor="#989898"
                 value={updatePhone}
                 onChangeText={setUpdatePhone}
                 editable={!actionLoading && !statusMessage}
@@ -338,18 +338,18 @@ export default function MotoristaMotoristaDashboard() {
 }
 
 const styles = StyleSheet.create({
-  scroll: {
+  scroll: { maxWidth: 1190, width: '100%', alignSelf: 'center', 
     paddingBottom: 32,
   },
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#060c22",
+    backgroundColor: "#111111",
     gap: 12,
   },
   errorText: {
-    color: "#ef4444",
+    color: "#EEEEEE",
     fontSize: 14,
   },
   hero: {
@@ -359,12 +359,12 @@ const styles = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
-  glowCircle: {
+  glowCircle: { opacity: 0, 
     position: "absolute",
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: "rgba(168,85,247,0.1)",
+    backgroundColor: "rgba(167,167,167,0.1)",
     top: -100,
     right: -50,
   },
@@ -382,14 +382,14 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    backgroundColor: "rgba(196,181,253,0.15)",
+    backgroundColor: "rgba(210,210,210,0.15)",
     borderRadius: 6,
     alignSelf: "flex-start",
     marginBottom: 8,
   },
   roleText: {
     fontSize: 11,
-    color: "#c4b5fd",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   heroName: {
@@ -400,13 +400,13 @@ const styles = StyleSheet.create({
   },
   heroSub: {
     fontSize: 13,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   avatar: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#2563eb",
+    backgroundColor: "#EEEEEE",
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 12,
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.1)",
+    borderColor: "rgba(165,165,165,0.1)",
   },
   infoRow: {
     flexDirection: "row",
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 4,
   },
   infoValue: {
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "rgba(148,163,184,0.1)",
+    backgroundColor: "rgba(165,165,165,0.1)",
     marginVertical: 12,
   },
   editIcon: {
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
     marginRight: -8,
   },
   categoryBadge: {
-    backgroundColor: "#2563eb30",
+    backgroundColor: "#44444430",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 12,
-    color: "#2563eb",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   statusRow: {
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 13,
-    color: "#22c55e",
+    color: "#C4C4C4",
     fontWeight: "500",
   },
   actionButton: {
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
   },
   actionDesc: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   modalOverlay: {
     flex: 1,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#0f1728",
+    backgroundColor: "#111111",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     paddingTop: 16,
@@ -536,9 +536,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   input: {
-    backgroundColor: "rgba(30,41,59,0.7)",
+    backgroundColor: "rgba(43,43,43,0.7)",
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.2)",
+    borderColor: "rgba(165,165,165,0.2)",
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   submitBtn: {
-    backgroundColor: "#0ea5e9",
+    backgroundColor: "#EEEEEE",
     padding: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -563,15 +563,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "rgba(239,68,68,0.1)",
+    backgroundColor: "rgba(125,125,125,0.1)",
     borderWidth: 1,
-    borderColor: "rgba(239,68,68,0.2)",
+    borderColor: "rgba(125,125,125,0.2)",
     padding: 10,
     borderRadius: 8,
     marginBottom: 4,
   },
   inlineErrorText: {
-    color: "#ef4444",
+    color: "#EEEEEE",
     fontSize: 13,
     fontWeight: "500",
   },
@@ -579,15 +579,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "rgba(34,197,94,0.1)",
+    backgroundColor: "rgba(108,108,108,0.1)",
     borderWidth: 1,
-    borderColor: "rgba(34,197,94,0.2)",
+    borderColor: "rgba(108,108,108,0.2)",
     padding: 10,
     borderRadius: 8,
     marginBottom: 4,
   },
   inlineSuccessText: {
-    color: "#22c55e",
+    color: "#C4C4C4",
     fontSize: 13,
     fontWeight: "500",
   },

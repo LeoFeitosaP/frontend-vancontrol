@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
   },
-  content: {
+  content: { maxWidth: 1190, width: '100%', alignSelf: 'center', 
     marginTop: 6,
     marginLeft: 24,
   },

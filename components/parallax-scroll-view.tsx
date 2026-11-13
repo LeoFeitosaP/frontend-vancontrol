@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     height: HEADER_HEIGHT,
     overflow: 'hidden',
   },
-  content: {
+  content: { maxWidth: 1190, width: '100%', alignSelf: 'center', 
     flex: 1,
     padding: 32,
     gap: 16,

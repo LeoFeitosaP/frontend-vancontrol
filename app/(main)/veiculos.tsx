@@ -9,7 +9,7 @@ export default function VeiculosScreen() {
   if (authLoading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator color="#0ea5e9" size="large" />
+        <ActivityIndicator color="#EEEEEE" size="large" />
       </View>
     );
   }
@@ -28,7 +28,7 @@ export default function VeiculosScreen() {
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#050a1e', padding: 28 },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#111111', padding: 28 },
   lockTitle: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 10, textAlign: 'center' },
-  lockSubtitle: { fontSize: 14, lineHeight: 20, color: '#94a3b8', textAlign: 'center' },
+  lockSubtitle: { fontSize: 14, lineHeight: 20, color: '#C4C4C4', textAlign: 'center' },
 });

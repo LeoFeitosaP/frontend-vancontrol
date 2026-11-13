@@ -86,7 +86,7 @@ export default function MotoristasPassageiroDashboard() {
   return (
     <View style={styles.container}>
       {/* ── HEADER ── */}
-      <LinearGradient colors={["#100d28", "#070e28"]} style={styles.header}>
+      <LinearGradient colors={["#111111", "#111111"]} style={styles.header}>
         <View style={styles.glowCircle} />
 
         <Animated.View
@@ -94,7 +94,7 @@ export default function MotoristasPassageiroDashboard() {
         >
           <View style={styles.headerText}>
             <View style={styles.roleTag}>
-              <Ionicons name="people-outline" size={12} color="#c4b5fd" />
+              <Ionicons name="people-outline" size={12} color="#EEEEEE" />
               <Text style={styles.roleText}>Passageiro</Text>
             </View>
             <Text style={styles.headerTitle}>Motoristas Disponíveis</Text>
@@ -106,11 +106,11 @@ export default function MotoristasPassageiroDashboard() {
 
         {/* Search Bar */}
         <View style={styles.searchContainer}>
-          <Ionicons name="search-outline" size={18} color="#64748b" />
+          <Ionicons name="search-outline" size={18} color="#989898" />
           <TextInput
             style={styles.searchInput}
             placeholder="Buscar por nome ou CPF"
-            placeholderTextColor="#64748b"
+            placeholderTextColor="#989898"
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -120,11 +120,11 @@ export default function MotoristasPassageiroDashboard() {
       {/* ── CONTEÚDO ── */}
       {loading ? (
         <View style={styles.centerContent}>
-          <ActivityIndicator color="#a78bfa" size="large" />
+          <ActivityIndicator color="#EEEEEE" size="large" />
         </View>
       ) : motoristasFiltrados.length === 0 ? (
         <View style={styles.centerContent}>
-          <Ionicons name="people-outline" size={48} color="#64748b" />
+          <Ionicons name="people-outline" size={48} color="#989898" />
           <Text style={styles.emptyText}>
             {motoristas.length === 0
               ? "Nenhum motorista disponível"
@@ -147,7 +147,7 @@ export default function MotoristasPassageiroDashboard() {
               activeOpacity={0.7}
             >
               <LinearGradient
-                colors={["rgba(30,41,59,0.5)", "rgba(15,23,42,0.5)"]}
+                colors={["rgba(43,43,43,0.5)", "rgba(27,27,27,0.5)"]}
                 style={styles.motoristaCard}
               >
                 <View style={styles.cardHeader}>
@@ -171,7 +171,7 @@ export default function MotoristasPassageiroDashboard() {
 
                 <View style={styles.cardFooter}>
                   <View style={styles.footerItem}>
-                    <Ionicons name="calendar-outline" size={14} color="#94a3b8" />
+                    <Ionicons name="calendar-outline" size={14} color="#C4C4C4" />
                     <Text style={styles.footerText}>
                       {motorista.dataValidadeCnh}
                     </Text>
@@ -179,7 +179,7 @@ export default function MotoristasPassageiroDashboard() {
                   <Ionicons
                     name="chevron-forward-outline"
                     size={18}
-                    color="#64748b"
+                    color="#989898"
                   />
                 </View>
               </LinearGradient>
@@ -213,7 +213,7 @@ export default function MotoristasPassageiroDashboard() {
                     <Text style={styles.modalRole}>Motorista Profissional</Text>
                   </View>
                   <TouchableOpacity onPress={() => setModalVisible(false)}>
-                    <Ionicons name="close-circle-outline" size={28} color="#ef4444" />
+                    <Ionicons name="close-circle-outline" size={28} color="#EEEEEE" />
                   </TouchableOpacity>
                 </View>
 
@@ -230,7 +230,7 @@ export default function MotoristasPassageiroDashboard() {
                     </Text>
 
                     <LinearGradient
-                      colors={["rgba(30,41,59,0.5)", "rgba(15,23,42,0.5)"]}
+                      colors={["rgba(43,43,43,0.5)", "rgba(27,27,27,0.5)"]}
                       style={styles.modalCard}
                     >
                       <View style={styles.modalCardRow}>
@@ -267,7 +267,7 @@ export default function MotoristasPassageiroDashboard() {
                         <Ionicons
                           name="checkmark-circle-outline"
                           size={18}
-                          color="#22c55e"
+                          color="#C4C4C4"
                         />
                         <Text style={styles.statusTextOk}>
                           Motorista verificado e seguro
@@ -292,13 +292,13 @@ export default function MotoristasPassageiroDashboard() {
                       <View
                         style={[
                           styles.contactIcon,
-                          { backgroundColor: "#0ea5e930" },
+                          { backgroundColor: "#44444430" },
                         ]}
                       >
                         <Ionicons
                           name="call-outline"
                           size={20}
-                          color="#0ea5e9"
+                          color="#EEEEEE"
                         />
                       </View>
                       <View style={styles.contactInfo}>
@@ -310,7 +310,7 @@ export default function MotoristasPassageiroDashboard() {
                       <Ionicons
                         name="chevron-forward-outline"
                         size={20}
-                        color="#64748b"
+                        color="#989898"
                       />
                     </TouchableOpacity>
                   </View>
@@ -321,7 +321,7 @@ export default function MotoristasPassageiroDashboard() {
                       <Ionicons
                         name="shield-checkmark-outline"
                         size={20}
-                        color="#22c55e"
+                        color="#C4C4C4"
                       />
                       <View style={styles.warningText}>
                         <Text style={styles.warningTitle}>
@@ -359,7 +359,7 @@ import { TextInput } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#060c22",
+    backgroundColor: "#111111",
   },
   header: {
     padding: 16,
@@ -367,12 +367,12 @@ const styles = StyleSheet.create({
     position: "relative",
     overflow: "hidden",
   },
-  glowCircle: {
+  glowCircle: { opacity: 0, 
     position: "absolute",
     width: 180,
     height: 180,
     borderRadius: 90,
-    backgroundColor: "rgba(168,85,247,0.1)",
+    backgroundColor: "rgba(167,167,167,0.1)",
     top: -60,
     right: -40,
   },
@@ -388,13 +388,13 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 5,
-    backgroundColor: "rgba(196,181,253,0.15)",
+    backgroundColor: "rgba(210,210,210,0.15)",
     borderRadius: 6,
     alignSelf: "flex-start",
   },
   roleText: {
     fontSize: 11,
-    color: "#c4b5fd",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   headerTitle: {
@@ -404,17 +404,17 @@ const styles = StyleSheet.create({
   },
   headerSub: {
     fontSize: 13,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 12,
     paddingVertical: 10,
-    backgroundColor: "rgba(30,41,59,0.7)",
+    backgroundColor: "rgba(43,43,43,0.7)",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.2)",
+    borderColor: "rgba(165,165,165,0.2)",
   },
   searchInput: {
     flex: 1,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   emptyText: {
-    color: "#94a3b8",
+    color: "#C4C4C4",
     fontSize: 14,
   },
   listContent: {
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.1)",
+    borderColor: "rgba(165,165,165,0.1)",
   },
   cardHeader: {
     flexDirection: "row",
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: "#2563eb",
+    backgroundColor: "#EEEEEE",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -471,17 +471,17 @@ const styles = StyleSheet.create({
   },
   motoristaDetails: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   categoryBadge: {
-    backgroundColor: "#2563eb30",
+    backgroundColor: "#44444430",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 6,
   },
   categoryText: {
     fontSize: 11,
-    color: "#2563eb",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   cardFooter: {
@@ -491,7 +491,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: "rgba(148,163,184,0.1)",
+    borderTopColor: "rgba(165,165,165,0.1)",
   },
   footerItem: {
     flexDirection: "row",
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   modalOverlay: {
     flex: 1,
@@ -508,7 +508,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#0f1728",
+    backgroundColor: "#111111",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     maxHeight: "90%",
@@ -521,13 +521,13 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(148,163,184,0.1)",
+    borderBottomColor: "rgba(165,165,165,0.1)",
   },
   modalAvatarBox: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#2563eb",
+    backgroundColor: "#EEEEEE",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -547,7 +547,7 @@ const styles = StyleSheet.create({
   },
   modalRole: {
     fontSize: 12,
-    color: "#94a3b8",
+    color: "#C4C4C4",
   },
   modalBody: {
     flex: 1,
@@ -570,7 +570,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 12,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.1)",
+    borderColor: "rgba(165,165,165,0.1)",
   },
   modalCardRow: {
     flexDirection: "row",
@@ -581,7 +581,7 @@ const styles = StyleSheet.create({
   },
   modalCardLabel: {
     fontSize: 11,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 4,
   },
   modalCardValue: {
@@ -591,11 +591,11 @@ const styles = StyleSheet.create({
   },
   modalCardDivider: {
     height: 1,
-    backgroundColor: "rgba(148,163,184,0.1)",
+    backgroundColor: "rgba(165,165,165,0.1)",
     marginVertical: 10,
   },
   modalCategoryBadge: {
-    backgroundColor: "#2563eb30",
+    backgroundColor: "#44444430",
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
@@ -603,7 +603,7 @@ const styles = StyleSheet.create({
   },
   modalCategoryText: {
     fontSize: 12,
-    color: "#2563eb",
+    color: "#EEEEEE",
     fontWeight: "500",
   },
   statusRow: {
@@ -613,7 +613,7 @@ const styles = StyleSheet.create({
   },
   statusTextOk: {
     fontSize: 12,
-    color: "#22c55e",
+    color: "#C4C4C4",
     fontWeight: "500",
   },
   contactButton: {
@@ -622,10 +622,10 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 12,
     paddingVertical: 12,
-    backgroundColor: "rgba(30,41,59,0.5)",
+    backgroundColor: "rgba(43,43,43,0.5)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(148,163,184,0.1)",
+    borderColor: "rgba(165,165,165,0.1)",
   },
   contactIcon: {
     width: 40,
@@ -639,7 +639,7 @@ const styles = StyleSheet.create({
   },
   contactLabel: {
     fontSize: 11,
-    color: "#94a3b8",
+    color: "#C4C4C4",
     marginBottom: 2,
   },
   contactValue: {
@@ -652,10 +652,10 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingHorizontal: 12,
     paddingVertical: 12,
-    backgroundColor: "rgba(34,197,94,0.1)",
+    backgroundColor: "rgba(108,108,108,0.1)",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(34,197,94,0.2)",
+    borderColor: "rgba(108,108,108,0.2)",
   },
   warningText: {
     flex: 1,
@@ -663,21 +663,21 @@ const styles = StyleSheet.create({
   warningTitle: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#22c55e",
+    color: "#C4C4C4",
     marginBottom: 2,
   },
   warningDesc: {
     fontSize: 11,
-    color: "#86efac",
+    color: "#EEEEEE",
   },
   modalActions: {
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderTopWidth: 1,
-    borderTopColor: "rgba(148,163,184,0.1)",
+    borderTopColor: "rgba(165,165,165,0.1)",
   },
   actionButton: {
-    backgroundColor: "#2563eb",
+    backgroundColor: "#EEEEEE",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",

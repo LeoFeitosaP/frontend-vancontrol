@@ -180,7 +180,7 @@ export default function RegisterScreen() {
   return (
     <>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      <LinearGradient colors={['#050a1e', '#080f28', '#0a1235']} style={StyleSheet.absoluteFill} />
+      <LinearGradient colors={['#111111', '#111111', '#111111']} style={StyleSheet.absoluteFill} />
       <View style={styles.glowTopRight} />
       <View style={styles.glowBottomLeft} />
 
@@ -221,7 +221,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Seu nome"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.name}
                   onChangeText={(t) => updateField('name', t)}
                   autoCapitalize="words"
@@ -236,7 +236,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="seu@email.com"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.email}
                   onChangeText={(t) => updateField('email', t)}
                   keyboardType="email-address"
@@ -253,7 +253,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="••••••••"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.password}
                   onChangeText={(t) => updateField('password', t)}
                   secureTextEntry={!showPass}
@@ -271,7 +271,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="00000000000"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={formatCpf(form.cpf)}
                   onChangeText={(t) => updateField('cpf', onlyDigits(t))}
                   keyboardType="numeric"
@@ -286,7 +286,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="(00) 00000-0000"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={formatTelefone(form.telefone)}
                   onChangeText={(t) => updateField('telefone', onlyDigits(t))}
                   keyboardType="phone-pad"
@@ -301,7 +301,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Sua instituicao"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.instituicaoEnsino}
                   onChangeText={(t) => updateField('instituicaoEnsino', t)}
                 />
@@ -334,7 +334,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="Rua, numero, bairro"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.endereco}
                   onChangeText={(t) => updateField('endereco', t)}
                 />
@@ -348,7 +348,7 @@ export default function RegisterScreen() {
                 <TextInput
                   style={styles.input}
                   placeholder="00000-000"
-                  placeholderTextColor="#3d4a6b"
+                  placeholderTextColor="#444444"
                   value={form.cep}
                   onChangeText={(t) => updateField('cep', formatCep(t))}
                   keyboardType="numeric"
@@ -364,7 +364,7 @@ export default function RegisterScreen() {
 
             <TouchableOpacity onPress={handleRegister} activeOpacity={0.85} disabled={loading} style={{ marginTop: 8 }}>
               <LinearGradient
-                colors={loading ? ['#1a2a4a', '#1a2a4a'] : ['#2563eb', '#1953c0', '#1240a0']}
+                colors={loading ? ['#444444', '#444444'] : ['#EEEEEE', '#C4C4C4', '#989898']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={styles.button}
@@ -393,37 +393,37 @@ export default function RegisterScreen() {
 
 const styles = StyleSheet.create({
   scroll: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 60, maxWidth: 520, alignSelf: 'center', width: '100%' },
-  glowTopRight: { position: 'absolute', top: -60, right: -60, width: 240, height: 240, borderRadius: 120, backgroundColor: 'rgba(25,83,192,0.15)' },
-  glowBottomLeft: { position: 'fixed', bottom: 40, left: -80, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(37,99,235,0.08)' },
+  glowTopRight: { opacity: 0,  position: 'absolute', top: -60, right: -60, width: 240, height: 240, borderRadius: 120, backgroundColor: 'rgba(100,100,100,0.15)' },
+  glowBottomLeft: { opacity: 0,  position: 'fixed', bottom: 40, left: -80, width: 200, height: 200, borderRadius: 100, backgroundColor: 'rgba(124,124,124,0.08)' },
   header: { marginBottom: 28 },
   backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.07)', borderWidth: 0.5, borderColor: 'rgba(255,255,255,0.12)', alignItems: 'center', justifyContent: 'center', marginBottom: 22 },
   backIcon: { color: '#fff', fontSize: 16 },
-  badge: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(37,99,235,0.15)', borderWidth: 0.5, borderColor: 'rgba(37,99,235,0.4)', alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20, marginBottom: 16 },
-  badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#2563eb' },
-  badgeText: { fontSize: 12, color: '#60a5fa', fontWeight: '600', letterSpacing: 0.5 },
+  badge: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: 'rgba(124,124,124,0.15)', borderWidth: 0.5, borderColor: 'rgba(124,124,124,0.4)', alignSelf: 'flex-start', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 20, marginBottom: 16 },
+  badgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: '#EEEEEE' },
+  badgeText: { fontSize: 12, color: '#EEEEEE', fontWeight: '600', letterSpacing: 0.5 },
   title: { fontSize: 30, fontWeight: '800', color: '#ffffff', lineHeight: 38, marginBottom: 6, letterSpacing: 0.3 },
-  subtitle: { fontSize: 15, color: '#64748b', lineHeight: 22 },
+  subtitle: { fontSize: 15, color: '#989898', lineHeight: 22 },
   form: { gap: 18 },
   fieldGroup: { gap: 8 },
-  label: { fontSize: 13, fontWeight: '600', color: '#94a3b8', letterSpacing: 0.3 },
+  label: { fontSize: 13, fontWeight: '600', color: '#C4C4C4', letterSpacing: 0.3 },
   inputWrap: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.05)', borderWidth: 0.5, borderColor: 'rgba(255,255,255,0.1)', borderRadius: 14, paddingHorizontal: 14, height: 54, gap: 10 },
-  inputIcon: { fontSize: 16, color: '#94a3b8' },
+  inputIcon: { fontSize: 16, color: '#C4C4C4' },
   input: { flex: 1, color: '#f1f5f9', fontSize: 15, height: '100%' },
   turnoRow: { flexDirection: 'row', gap: 10 },
   turnoOption: { flex: 1, height: 48, borderRadius: 12, borderWidth: 0.5, borderColor: 'rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', alignItems: 'center', justifyContent: 'center' },
-  turnoOptionActive: { borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.12)' },
-  turnoText: { fontSize: 13, fontWeight: '600', color: '#94a3b8' },
-  turnoTextActive: { color: '#93c5fd' },
+  turnoOptionActive: { borderColor: '#EEEEEE', backgroundColor: 'rgba(124,124,124,0.12)' },
+  turnoText: { fontSize: 13, fontWeight: '600', color: '#C4C4C4' },
+  turnoTextActive: { color: '#EEEEEE' },
   eyeBtn: { padding: 4 },
-  eyeIcon: { fontSize: 12, color: '#94a3b8' },
-  errorBox: { backgroundColor: 'rgba(239,68,68,0.12)', borderWidth: 0.5, borderColor: 'rgba(239,68,68,0.35)', borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10 },
-  errorText: { color: '#fca5a5', fontSize: 13, fontWeight: '500' },
-  button: { paddingVertical: 17, borderRadius: 14, alignItems: 'center', justifyContent: 'center', shadowColor: '#1953c0', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 10 },
+  eyeIcon: { fontSize: 12, color: '#C4C4C4' },
+  errorBox: { backgroundColor: 'rgba(125,125,125,0.12)', borderWidth: 0.5, borderColor: 'rgba(125,125,125,0.35)', borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10 },
+  errorText: { color: '#EEEEEE', fontSize: 13, fontWeight: '500' },
+  button: { paddingVertical: 17, borderRadius: 14, alignItems: 'center', justifyContent: 'center', shadowColor: '#C4C4C4', shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, elevation: 10 },
   buttonText: { color: '#fff', fontSize: 17, fontWeight: '700', letterSpacing: 0.3 },
   divider: { flexDirection: 'row', alignItems: 'center', gap: 12, marginVertical: 2 },
   dividerLine: { flex: 1, height: 0.5, backgroundColor: 'rgba(255,255,255,0.1)' },
-  dividerText: { fontSize: 13, color: '#3d4a6b', fontWeight: '500' },
+  dividerText: { fontSize: 13, color: '#444444', fontWeight: '500' },
   loginBtn: { alignItems: 'center', paddingVertical: 4 },
-  loginText: { fontSize: 14, color: '#64748b' },
-  loginLink: { color: '#60a5fa', fontWeight: '700' },
+  loginText: { fontSize: 14, color: '#989898' },
+  loginLink: { color: '#EEEEEE', fontWeight: '700' },
 });

@@ -80,7 +80,7 @@ export default function VeiculosPassageiroScreen({ user }: Props) {
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator color="#0ea5e9" size="large" />
+        <ActivityIndicator color="#EEEEEE" size="large" />
       </View>
     );
   }
@@ -100,7 +100,7 @@ export default function VeiculosPassageiroScreen({ user }: Props) {
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
     >
-      <LinearGradient colors={['#050a1e', '#07152f']} style={styles.hero}>
+      <LinearGradient colors={['#111111', '#111111']} style={styles.hero}>
         <View style={styles.heroGlow} />
         <Text style={styles.heroLabel}>Veículos</Text>
         <Text style={styles.heroTitle}>Veículos para passageiros</Text>
@@ -121,7 +121,7 @@ export default function VeiculosPassageiroScreen({ user }: Props) {
               value={searchPlaca}
               onChangeText={setSearchPlaca}
               placeholder="Digite a placa"
-              placeholderTextColor="#94a3b8"
+              placeholderTextColor="#C4C4C4"
               style={styles.input}
               returnKeyType="search"
               onSubmitEditing={handleSearch}
@@ -167,38 +167,38 @@ export default function VeiculosPassageiroScreen({ user }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#060c22' },
-  content: { paddingBottom: 48 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#050a1e', padding: 28 },
+  container: { flex: 1, backgroundColor: '#111111' },
+  content: { maxWidth: 1190, width: '100%', alignSelf: 'center',  paddingBottom: 48 },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#111111', padding: 28 },
   hero: { paddingTop: 56, paddingHorizontal: 24, paddingBottom: 26, position: 'relative', overflow: 'hidden' },
-  heroGlow: { position: 'absolute', top: -50, right: -50, width: 180, height: 180, borderRadius: 90, backgroundColor: 'rgba(37,99,235,0.16)' },
-  heroLabel: { fontSize: 11, fontWeight: '700', color: '#38bdf8', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 8 },
+  heroGlow: { opacity: 0,  position: 'absolute', top: -50, right: -50, width: 180, height: 180, borderRadius: 90, backgroundColor: 'rgba(124,124,124,0.16)' },
+  heroLabel: { fontSize: 11, fontWeight: '700', color: '#EEEEEE', letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 8 },
   heroTitle: { fontSize: 28, fontWeight: '800', color: '#f8fafc', marginBottom: 8, lineHeight: 34 },
-  heroSubtitle: { fontSize: 14, color: '#94a3b8', lineHeight: 20, maxWidth: '90%' },
+  heroSubtitle: { fontSize: 14, color: '#C4C4C4', lineHeight: 20, maxWidth: '90%' },
   statsRow: { flexDirection: 'row', gap: 12, marginTop: 20 },
   statCard: { flex: 1, borderRadius: 18, padding: 16, borderWidth: 1, backgroundColor: 'rgba(255,255,255,0.05)' },
-  statCardBlue: { borderColor: '#2563eb' },
+  statCardBlue: { borderColor: '#EEEEEE' },
   statValue: { fontSize: 24, fontWeight: '800', color: '#fff' },
-  statLabel: { fontSize: 11, color: '#94a3b8', marginTop: 6, textTransform: 'uppercase', letterSpacing: 0.9 },
-  body: { paddingHorizontal: 24, paddingTop: 20, gap: 16 },
+  statLabel: { fontSize: 11, color: '#C4C4C4', marginTop: 6, textTransform: 'uppercase', letterSpacing: 0.9 },
+  body: { maxWidth: 1190, width: '100%', alignSelf: 'center',  paddingHorizontal: 24, paddingTop: 20, gap: 16 },
   sectionCard: { borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.04)', padding: 18, gap: 14 },
   sectionTitle: { fontSize: 15, fontWeight: '700', color: '#e2e8f0' },
   inputRow: { flexDirection: 'row', gap: 12, alignItems: 'center' },
   input: { flex: 1, minHeight: 48, borderRadius: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#fff', paddingHorizontal: 14, paddingVertical: 12 },
-  primaryButton: { borderRadius: 16, backgroundColor: '#2563eb', paddingVertical: 14, alignItems: 'center' },
+  primaryButton: { borderRadius: 16, backgroundColor: '#EEEEEE', paddingVertical: 14, alignItems: 'center' },
   secondaryButton: { borderRadius: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.12)', paddingVertical: 14, alignItems: 'center' },
   primaryButtonText: { color: '#eff6ff', fontWeight: '700' },
-  secondaryButtonText: { color: '#cbd5e1', fontWeight: '700' },
+  secondaryButtonText: { color: '#C4C4C4', fontWeight: '700' },
   messageCard: { borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.04)', padding: 18 },
-  errorCard: { borderColor: 'rgba(239,68,68,0.25)', backgroundColor: 'rgba(239,68,68,0.08)' },
+  errorCard: { borderColor: 'rgba(125,125,125,0.25)', backgroundColor: 'rgba(125,125,125,0.08)' },
   messageTitle: { fontSize: 16, fontWeight: '700', color: '#fff', marginBottom: 6 },
-  messageText: { fontSize: 13, color: '#cbd5e1', lineHeight: 20 },
+  messageText: { fontSize: 13, color: '#C4C4C4', lineHeight: 20 },
   routeCard: { borderRadius: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.08)', backgroundColor: 'rgba(255,255,255,0.04)', padding: 20, gap: 16 },
   routeHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   routeTitle: { fontSize: 18, fontWeight: '800', color: '#f8fafc' },
-  routeTag: { borderRadius: 14, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: 'rgba(37,99,235,0.15)' },
-  routeTagText: { fontSize: 11, fontWeight: '700', color: '#7dd3fc' },
-  routeDescription: { fontSize: 13, color: '#cbd5e1', lineHeight: 20 },
+  routeTag: { borderRadius: 14, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: 'rgba(124,124,124,0.15)' },
+  routeTagText: { fontSize: 11, fontWeight: '700', color: '#EEEEEE' },
+  routeDescription: { fontSize: 13, color: '#C4C4C4', lineHeight: 20 },
   lockTitle: { fontSize: 20, fontWeight: '800', color: '#fff', marginBottom: 10, textAlign: 'center' },
-  lockSubtitle: { fontSize: 14, lineHeight: 20, color: '#94a3b8', textAlign: 'center' },
+  lockSubtitle: { fontSize: 14, lineHeight: 20, color: '#C4C4C4', textAlign: 'center' },
 });
