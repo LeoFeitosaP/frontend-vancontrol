@@ -10,11 +10,21 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Crie o arquivo `.env` na raiz do projeto:
+
+   ```env
+   EXPO_PUBLIC_API_URL=https://projeto-integrador-3-yazx.onrender.com
+   ```
+
+   Para desenvolvimento local, substitua o valor pelo endereço acessível pelo dispositivo (por exemplo, `http://10.0.2.2:8080` no emulador Android ou `http://SEU_IP:8080` em um celular físico).
+
+3. Start the app
 
    ```bash
    npx expo start
    ```
+
+O Expo disponibiliza automaticamente variáveis com o prefixo `EXPO_PUBLIC_` no aplicativo. Reinicie o Expo depois de alterar variáveis de ambiente.
 
 In the output, you'll find options to open the app in a
 

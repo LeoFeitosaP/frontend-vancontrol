@@ -33,6 +33,9 @@ export default function VeiculosMotoristaScreen({ user }: Props) {
   const [createAno, setCreateAno] = useState('');
   const [createCapacidade, setCreateCapacidade] = useState('');
   const [createRenavam, setCreateRenavam] = useState('');
+  const [createCep, setCreateCep] = useState('');
+  const [createNumero, setCreateNumero] = useState('');
+  const [createLogradouro, setCreateLogradouro] = useState('');
   const [createStatus, setCreateStatus] = useState('DISPONIVEL');
   const [createLoading, setCreateLoading] = useState(false);
 
@@ -82,9 +85,12 @@ export default function VeiculosMotoristaScreen({ user }: Props) {
     const ano = Number(createAno);
     const capacidade = Number(createCapacidade);
     const renavam = createRenavam.trim();
+    const cep = createCep.replace(/\D/g, '');
+    const numero = createNumero.trim();
+    const logradouro = createLogradouro.trim();
     const status = createStatus.trim().toUpperCase();
 
-    if (!placa || !marca || !modelo || !createAno || !createCapacidade || !renavam) {
+    if (!placa || !marca || !modelo || !createAno || !createCapacidade || !renavam || !cep || !numero) {
       setError('Preencha todos os campos do cadastro.');
       return;
     }
@@ -104,12 +110,19 @@ export default function VeiculosMotoristaScreen({ user }: Props) {
       setError('Renavam deve ter 11 dígitos numéricos.');
       return;
     }
+    if (!/^[0-9]{8}$/.test(cep)) {
+      setError('CEP deve ter 8 dígitos.');
+      return;
+    }
 
     setError(null); setCreateLoading(true); setMessage(null);
     try {
-      await veiculosService.cadastrar({ placa, marca, modelo, ano, capacidade, renavam, status });
+      await veiculosService.cadastrar({
+        placa, marca, modelo, ano, capacidade, renavam, status,
+        endereco: { cep, numero, logradouro: logradouro || undefined },
+      });
       setMessage('Veículo cadastrado com sucesso.');
-      setCreatePlaca(''); setCreateMarca(''); setCreateModelo(''); setCreateAno(''); setCreateCapacidade(''); setCreateRenavam(''); setCreateStatus('DISPONIVEL');
+      setCreatePlaca(''); setCreateMarca(''); setCreateModelo(''); setCreateAno(''); setCreateCapacidade(''); setCreateRenavam(''); setCreateCep(''); setCreateNumero(''); setCreateLogradouro(''); setCreateStatus('DISPONIVEL');
       await loadVeiculos();
     } catch (e) {
       setError((e as Error).message || 'Erro ao cadastrar veículo.');
@@ -252,6 +265,11 @@ export default function VeiculosMotoristaScreen({ user }: Props) {
               <TextInput value={createCapacidade} onChangeText={setCreateCapacidade} placeholder="Capacidade" placeholderTextColor="#C4C4C4" keyboardType="numeric" style={[styles.input, styles.smallInput]} />
             </View>
             <TextInput value={createRenavam} onChangeText={setCreateRenavam} placeholder="Renavam" placeholderTextColor="#C4C4C4" keyboardType="numeric" style={styles.input} />
+            <TextInput value={createCep} onChangeText={setCreateCep} placeholder="CEP da base (00000-000)" placeholderTextColor="#C4C4C4" keyboardType="numeric" style={styles.input} />
+            <View style={styles.inlineInputs}>
+              <TextInput value={createNumero} onChangeText={setCreateNumero} placeholder="Número" placeholderTextColor="#C4C4C4" style={[styles.input, styles.smallInput]} />
+              <TextInput value={createLogradouro} onChangeText={setCreateLogradouro} placeholder="Logradouro (opcional)" placeholderTextColor="#C4C4C4" style={[styles.input, styles.smallInput]} />
+            </View>
             <View style={styles.inputRow}>
               <TextInput value={createStatus} onChangeText={setCreateStatus} placeholder="Status" placeholderTextColor="#C4C4C4" style={styles.input} />
               <TouchableOpacity style={styles.primaryButton} onPress={handleCreate} activeOpacity={0.75} disabled={createLoading}><Text style={styles.primaryButtonText}>{createLoading ? 'Cadastrando...' : 'Cadastrar'}</Text></TouchableOpacity>

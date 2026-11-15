@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Animated, ActivityIndicator, 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import type { AuthUser } from '../../hooks/useAuth';
-import { rotasService } from '../../services/api';
+import { formatLocalTimeInput, isValidLocalTime, rotasService } from '../../services/api';
 
 type Rota = {
   codigoRota: string;
@@ -107,6 +107,10 @@ export default function RotasAdminScreen({ user }: Props) {
 
     if (Number.isNaN(distancia) || distancia <= 0) {
       setError('Informe uma distância válida maior que zero.');
+      return;
+    }
+    if (!isValidLocalTime(tempoEstimado)) {
+      setError('Informe o tempo no formato HH:mm, por exemplo 00:45.');
       return;
     }
 
@@ -308,8 +312,8 @@ export default function RotasAdminScreen({ user }: Props) {
             />
             <TextInput
               value={createTempo}
-              onChangeText={setCreateTempo}
-              placeholder="Tempo estimado"
+              onChangeText={(value) => setCreateTempo(formatLocalTimeInput(value))}
+              placeholder="Tempo (HH:mm)"
               placeholderTextColor="#C4C4C4"
               style={[styles.input, styles.smallInput]}
             />

@@ -23,7 +23,7 @@
 npm install
 npx expo start --web
 ```
-Para dispositivos físicos, ajuste `BASE_URL` em `services/api.ts` para o IP/hostname do backend acessível pela rede (a configuração herdada `localhost:8080` só funciona quando cliente e backend estão na mesma máquina).
+O endereço do backend é configurado por `EXPO_PUBLIC_API_URL` no arquivo `.env`. Para dispositivos físicos, use o IP/hostname do backend acessível pela rede.
 
 ## Verificações
 - `tsc --noEmit` passou.

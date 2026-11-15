@@ -36,7 +36,10 @@ export function useAuth() {
         const token = await AsyncStorage.getItem('@vancontrol:token');
         if (!token) return;
         const payload = decodeJWT(token);
-        if (!payload) return;
+        if (!payload || (typeof payload.exp === 'number' && payload.exp * 1000 <= Date.now())) {
+          await AsyncStorage.removeItem('@vancontrol:token');
+          return;
+        }
         setUser({
           name: payload.name ?? 'Usuário',
           role: payload.role ?? 'PASSAGEIRO',

@@ -1,9 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// const BASE_URL = 'http://10.0.2.2:8080'; // Android emulator
-// const BASE_URL = "http://localhost:8080"; // Web
-// const BASE_URL = 'http://SEU_IP:8080';   // Celular físico
-const BASE_URL = 'https://projeto-integrador-3-yazx.onrender.com'; // Deploy
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+
+if (!BASE_URL) {
+  throw new Error(
+    "A variável EXPO_PUBLIC_API_URL não está configurada. Crie um arquivo .env com a URL da API.",
+  );
+}
 
 async function getToken(): Promise<string | null> {
   return AsyncStorage.getItem("@vancontrol:token");
@@ -26,6 +29,54 @@ type RequestOptions = {
 type PageResponse<T> = {
   content: T[];
 };
+
+export type EnderecoPayload = {
+  cep: string;
+  numero: string;
+  logradouro?: string;
+  complemento?: string;
+  bairro?: string;
+  cidade?: string;
+  uf?: string;
+};
+
+export function formatLocalTimeInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  return digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits;
+}
+
+export function isValidLocalTime(value: string): boolean {
+  const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value);
+  return Boolean(match);
+}
+
+export function formatTelefone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  const ddd = digits.slice(0, 2);
+  const firstPart = digits.length > 10 ? digits.slice(2, 7) : digits.slice(2, 6);
+  const secondPart = digits.length > 10 ? digits.slice(7, 11) : digits.slice(6, 10);
+  let formatted = ddd ? `(${ddd}` : "";
+
+  if (ddd.length === 2) formatted += ") ";
+  if (firstPart) formatted += firstPart;
+  if (secondPart) formatted += `-${secondPart}`;
+
+  return formatted;
+}
+
+export function formatCnhValidityInput(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 6);
+  return digits.length > 2
+    ? `${digits.slice(0, 2)}/${digits.slice(2)}`
+    : digits;
+}
+
+export function formatCnhValidityForApi(value: string): string {
+  const digits = value.replace(/\D/g, "");
+  return digits.length === 6
+    ? `${digits.slice(2)}/${digits.slice(0, 2)}`
+    : value;
+}
 
 function getPageContent<T>(data: T[] | PageResponse<T>): T[] {
   return Array.isArray(data) ? data : data.content;
@@ -52,7 +103,14 @@ async function request<T>(
   });
 
   const data = await response.json().catch(() => null);
-  if (!response.ok) throw new Error(data?.message ?? `Erro ${response.status}`);
+  if (!response.ok) {
+    if (response.status === 401) {
+      await clearToken();
+      throw new Error("Sua sessão expirou. Faça login novamente.");
+    }
+    const message = data?.message ?? data?.mensagem ?? data?.error;
+    throw new Error(message ?? `Erro ${response.status}`);
+  }
   return data as T;
 }
 
@@ -74,8 +132,7 @@ export const authService = {
     telefone: string;
     instituicaoEnsino: string;
     turno: string;
-    endereco: string;
-    cep: string;
+    endereco: EnderecoPayload;
   }) {
     const data = await request<{ token: string; name: string }>(
       "/auth/register",
@@ -109,7 +166,16 @@ export const rotasService = {
 export const veiculosService = {
   listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/veiculos")),
   buscarPorPlaca: (placa: string) => request<any>(`/veiculos/${encodeURIComponent(placa)}`),
-  cadastrar: (payload: any) =>
+  cadastrar: (payload: {
+    placa: string;
+    marca: string;
+    modelo: string;
+    ano: number;
+    capacidade: number;
+    renavam: string;
+    status: string;
+    endereco: EnderecoPayload;
+  }) =>
     request("/veiculos", { method: "POST", body: payload }),
   atualizarStatus: (placa: string, status: string) =>
     request("/veiculos/status", { method: "PUT", body: { placa, status } }),
@@ -160,7 +226,7 @@ export const pagamentosService = {
     getPageContent(await request<any[] | PageResponse<any>>("/pagamentos/meus-pagamentos")),
   criar: (payload: any) =>
     request("/pagamentos", { method: "POST", body: payload }),
-  atualizarStatus: (id: string, status: string, dataPagamento?: string) =>
+  atualizarStatus: (id: string, status: string, dataPagamento: string) =>
     request(`/pagamentos/${encodeURIComponent(id)}/status`, {
       method: "PATCH",
       body: { status, dataPagamento },

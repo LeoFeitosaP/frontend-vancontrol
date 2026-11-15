@@ -26,6 +26,7 @@ type RegisterForm = {
   turno: string;
   endereco: string;
   cep: string;
+  numero: string;
 };
 
 const EMPTY_FORM: RegisterForm = {
@@ -38,6 +39,7 @@ const EMPTY_FORM: RegisterForm = {
   turno: '',
   endereco: '',
   cep: '',
+  numero: '',
 };
 
 const TURNO_OPTIONS = ['Manhã', 'Tarde', 'Noite'] as const;
@@ -126,6 +128,7 @@ export default function RegisterScreen() {
       'turno',
       'endereco',
       'cep',
+      'numero',
     ];
 
     for (const key of required) {
@@ -165,8 +168,11 @@ export default function RegisterScreen() {
         telefone: formatTelefone(form.telefone),
         instituicaoEnsino: form.instituicaoEnsino.trim(),
         turno: form.turno.trim(),
-        endereco: form.endereco.trim(),
-        cep: form.cep.trim(),
+        endereco: {
+          logradouro: form.endereco.trim(),
+          cep: onlyDigits(form.cep),
+          numero: form.numero.trim(),
+        },
       });
       router.replace('/(main)');
     } catch (err: any) {
@@ -351,6 +357,21 @@ export default function RegisterScreen() {
                   placeholderTextColor="#444444"
                   value={form.cep}
                   onChangeText={(t) => updateField('cep', formatCep(t))}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+
+            <View style={styles.fieldGroup}>
+              <Text style={styles.label}>Numero</Text>
+              <View style={styles.inputWrap}>
+                <Text style={styles.inputIcon}>#</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Numero do endereco"
+                  placeholderTextColor="#444444"
+                  value={form.numero}
+                  onChangeText={(t) => updateField('numero', t)}
                   keyboardType="numeric"
                 />
               </View>

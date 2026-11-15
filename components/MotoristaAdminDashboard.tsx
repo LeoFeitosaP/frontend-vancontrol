@@ -14,7 +14,12 @@ import {
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { motoristasService } from "../services/api";
+import {
+  formatCnhValidityForApi,
+  formatCnhValidityInput,
+  formatTelefone,
+  motoristasService,
+} from "../services/api";
 
 const { width } = Dimensions.get("window");
 
@@ -100,15 +105,31 @@ export default function MotoristaAdminDashboard() {
       return;
     }
 
+    const validityDigits = form.dataValidadeCnh.replace(/\D/g, "");
+    if (
+      validityDigits.length !== 6 ||
+      Number(validityDigits.slice(0, 2)) < 1 ||
+      Number(validityDigits.slice(0, 2)) > 12
+    ) {
+      Alert.alert("Erro", "Informe a validade no formato MM/AAAA");
+      return;
+    }
+
+    const phoneDigits = form.telefone.replace(/\D/g, "");
+    if (phoneDigits.length !== 10 && phoneDigits.length !== 11) {
+      Alert.alert("Erro", "Informe um telefone válido");
+      return;
+    }
+
     try {
       await motoristasService.cadastrar({
-        nome: form.nome,
+        name: form.nome,
         email: form.email,
         cpf: form.cpf,
         cnh: form.cnh,
         categoriaCnh: form.categoriaCnh,
-        dataValidadeCnh: form.dataValidadeCnh,
-        telefone: form.telefone,
+        dataValidadeCnh: formatCnhValidityForApi(form.dataValidadeCnh),
+        telefone: formatTelefone(form.telefone),
         password: form.password,
       });
 
@@ -155,7 +176,7 @@ export default function MotoristaAdminDashboard() {
     try {
       await motoristasService.atualizarTelefone(
         selectedMotorista.cpf,
-        updatePhone
+        formatTelefone(updatePhone)
       );
       Alert.alert("Sucesso", "Telefone atualizado com sucesso");
       setUpdatePhone("");
@@ -432,20 +453,24 @@ export default function MotoristaAdminDashboard() {
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Data Validade CNH (yyyy/MM)"
+                    placeholder="Validade CNH (MM/AAAA)"
                     placeholderTextColor="#989898"
                     value={form.dataValidadeCnh}
                     onChangeText={(text) =>
-                      setForm({ ...form, dataValidadeCnh: text })
+                      setForm({
+                        ...form,
+                        dataValidadeCnh: formatCnhValidityInput(text),
+                      })
                     }
                   />
                   <TextInput
                     style={styles.input}
-                    placeholder="Telefone (DD) XXXXX-XXXX"
+                    placeholder="Telefone (DDD) XXXXX-XXXX"
                     placeholderTextColor="#989898"
-                    value={form.telefone}
+                    keyboardType="phone-pad"
+                    value={formatTelefone(form.telefone)}
                     onChangeText={(text) =>
-                      setForm({ ...form, telefone: text })
+                      setForm({ ...form, telefone: formatTelefone(text) })
                     }
                   />
                   <TextInput
@@ -565,10 +590,13 @@ export default function MotoristaAdminDashboard() {
 
                       <TextInput
                         style={styles.input}
-                        placeholder="Novo Telefone (DD) XXXXX-XXXX"
+                        placeholder="Novo Telefone (DDD) XXXXX-XXXX"
                         placeholderTextColor="#989898"
-                        value={updatePhone}
-                        onChangeText={setUpdatePhone}
+                        keyboardType="phone-pad"
+                        value={formatTelefone(updatePhone)}
+                        onChangeText={(text) =>
+                          setUpdatePhone(formatTelefone(text))
+                        }
                       />
 
                       <TouchableOpacity

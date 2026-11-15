@@ -15,7 +15,7 @@ import {
 import { useEffect, useState, useRef } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { motoristasService } from "../services/api";
+import { formatTelefone, motoristasService } from "../services/api";
 import { useAuth } from "../hooks/useAuth";
 
 const { width } = Dimensions.get("window");
@@ -95,7 +95,10 @@ export default function MotoristaMotoristaDashboard() {
       setStatusMessage(null);
       
       // Chamada usando o CPF direto conforme funcionou perfeitamente antes
-      await motoristasService.atualizarTelefone(user.cpf, updatePhone);
+      await motoristasService.atualizarTelefone(
+        user.cpf,
+        formatTelefone(updatePhone),
+      );
 
       // Define a mensagem de sucesso interna
       setStatusMessage("Telefone atualizado com sucesso!");
@@ -309,10 +312,11 @@ export default function MotoristaMotoristaDashboard() {
 
               <TextInput
                 style={styles.input}
-                placeholder="Novo Telefone (DD) XXXXX-XXXX"
+                placeholder="Novo Telefone (DDD) XXXXX-XXXX"
                 placeholderTextColor="#989898"
-                value={updatePhone}
-                onChangeText={setUpdatePhone}
+                keyboardType="phone-pad"
+                value={formatTelefone(updatePhone)}
+                onChangeText={(text) => setUpdatePhone(formatTelefone(text))}
                 editable={!actionLoading && !statusMessage}
               />
 
