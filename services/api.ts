@@ -27,7 +27,7 @@ type RequestOptions = {
 };
 
 type PageResponse<T> = {
-  content: T[];
+  content?: T[];
 };
 
 export type EnderecoPayload = {
@@ -79,7 +79,9 @@ export function formatCnhValidityForApi(value: string): string {
 }
 
 function getPageContent<T>(data: T[] | PageResponse<T>): T[] {
-  return Array.isArray(data) ? data : data.content;
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.content)) return data.content;
+  throw new Error("A API retornou uma lista inválida.");
 }
 
 async function request<T>(
@@ -205,7 +207,21 @@ export const passageirosService = {
 
 export const viagensService = {
   listar: async () => getPageContent(await request<any[] | PageResponse<any>>("/viagens")),
+  listarPorPassageiro: async (cpf: string) =>
+    getPageContent(
+      await request<any[] | PageResponse<any>>(
+        `/passageiros/${encodeURIComponent(cpf)}/viagens`,
+      ),
+    ),
   buscarPorCodigo: (codigo: string) => request<any>(`/viagens/${encodeURIComponent(codigo)}`),
+  associarPassageiro: (codigo: string, cpf: string) =>
+    request(`/viagens/${encodeURIComponent(codigo)}/passageiros/${encodeURIComponent(cpf)}`, {
+      method: "POST",
+    }),
+  removerPassageiro: (codigo: string, cpf: string) =>
+    request(`/viagens/${encodeURIComponent(codigo)}/passageiros/${encodeURIComponent(cpf)}`, {
+      method: "DELETE",
+    }),
   criar: (payload: any) =>
     request("/viagens", { method: "POST", body: payload }),
   atualizarStatus: (codigo: string) =>

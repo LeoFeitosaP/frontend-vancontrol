@@ -5,6 +5,7 @@ import DateTimePicker, {
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
     ActivityIndicator,
+    Alert,
     Platform,
     Pressable,
     Text,
@@ -61,6 +62,9 @@ export default function ViagensScreen() {
   const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [associatedItems, setAssociatedItems] = useState<any[]>([]);
+  const [associatedLoading, setAssociatedLoading] = useState(false);
+  const [associatedError, setAssociatedError] = useState("");
 
   const [codigoRota, setCodigoRota] = useState("");
   const [placaVeiculo, setPlacaVeiculo] = useState("");
@@ -73,9 +77,12 @@ export default function ViagensScreen() {
   const [horarioSaidaPrevisto, setHorarioSaidaPrevisto] = useState("");
   const [horarioChegadaPrevisto, setHorarioChegadaPrevisto] = useState("");
   const [creating, setCreating] = useState(false);
+  const [associatingCode, setAssociatingCode] = useState<string | null>(null);
+  const [cancellingCode, setCancellingCode] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
   const canCreate = user?.role === "ADMIN" || user?.role === "MOTORISTA";
+  const canAssociate = user?.role === "PASSAGEIRO" && Boolean(user.cpf);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -90,9 +97,90 @@ export default function ViagensScreen() {
     }
   }, []);
 
+  const loadAssociated = useCallback(async () => {
+    if (!user?.cpf || user.role !== "PASSAGEIRO") return;
+
+    setAssociatedLoading(true);
+    setAssociatedError("");
+    try {
+      const trips = await viagensService.listarPorPassageiro(user.cpf);
+      setAssociatedItems(Array.isArray(trips) ? trips : []);
+    } catch (e: any) {
+      setAssociatedError(
+        e?.message || "Não foi possível obter suas viagens associadas.",
+      );
+    } finally {
+      setAssociatedLoading(false);
+    }
+  }, [user?.cpf, user?.role]);
+
   useEffect(() => {
     load();
   }, [load]);
+
+  useEffect(() => {
+    loadAssociated();
+  }, [loadAssociated]);
+
+  const associatePassenger = async (codigo: string) => {
+    if (!user?.cpf || associatingCode || cancellingCode) return;
+
+    setAssociatingCode(codigo);
+    setError("");
+    setMessage("");
+
+    try {
+      await viagensService.associarPassageiro(codigo, user.cpf);
+      setMessage("Você foi associado à viagem com sucesso.");
+      await Promise.all([load(), loadAssociated()]);
+    } catch (e: any) {
+      setError(e?.message || "Não foi possível associar você à viagem.");
+    } finally {
+      setAssociatingCode(null);
+    }
+  };
+
+  const removePassenger = async (codigo: string) => {
+    if (!user?.cpf || associatingCode || cancellingCode) return;
+
+    setCancellingCode(codigo);
+    setError("");
+    setMessage("");
+
+    try {
+      await viagensService.removerPassageiro(codigo, user.cpf);
+      setMessage("Sua associação com a viagem foi cancelada.");
+      await loadAssociated();
+    } catch (e: any) {
+      setAssociatedError(
+        e?.message || "Não foi possível cancelar sua associação.",
+      );
+    } finally {
+      setCancellingCode(null);
+    }
+  };
+
+  const confirmRemovePassenger = (codigo: string) => {
+    const remove = () => {
+      void removePassenger(codigo);
+    };
+
+    if (typeof window !== "undefined" && typeof window.confirm === "function") {
+      if (window.confirm("Deseja cancelar sua associação com esta viagem?")) {
+        remove();
+      }
+      return;
+    }
+
+    Alert.alert(
+      "Cancelar associação",
+      "Deseja cancelar sua associação com esta viagem?",
+      [
+        { text: "Manter", style: "cancel" },
+        { text: "Cancelar associação", style: "destructive", onPress: remove },
+      ],
+    );
+  };
 
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === "android") {
@@ -352,48 +440,74 @@ export default function ViagensScreen() {
             {error}
           </Text>
         ) : items.length ? (
-          items.map((v, i) => (
-            <View
-              key={String(v.codigoViagem || v.codigo || i)}
-              style={{
-                flexDirection: "row",
-                gap: 16,
-                alignItems: "center",
-                paddingVertical: 20,
-                borderBottomWidth: i < items.length - 1 ? 1 : 0,
-                borderColor: C.line,
-              }}
-            >
+          items.map((v, i) => {
+            const codigo = String(v.codigoViagem || v.codigo || "");
+            const isAssociating = associatingCode === codigo;
+
+            return (
               <View
+                key={codigo || i}
                 style={{
-                  backgroundColor: "#272727",
-                  width: 45,
-                  height: 45,
-                  borderRadius: 12,
+                  flexDirection: "row",
+                  gap: 16,
                   alignItems: "center",
-                  justifyContent: "center",
+                  paddingVertical: 20,
+                  borderBottomWidth: i < items.length - 1 ? 1 : 0,
+                  borderColor: C.line,
                 }}
               >
-                <Ionicons name="navigate-outline" color={C.white} size={20} />
-              </View>
-              <View style={{ flex: 1, gap: 6 }}>
-                <Text
-                  style={{ color: C.white, fontSize: 14, fontWeight: "800" }}
+                <View
+                  style={{
+                    backgroundColor: "#272727",
+                    width: 45,
+                    height: 45,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  Viagem{" "}
-                  {v.codigoViagem || v.codigo || String(i + 1).padStart(3, "0")}
-                </Text>
-                <Text style={{ color: C.muted, fontSize: 12 }}>
-                  {formatISOStringToBR(v.dataViagem || v.data)}
-                </Text>
+                  <Ionicons name="navigate-outline" color={C.white} size={20} />
+                </View>
+                <View style={{ flex: 1, gap: 6 }}>
+                  <Text
+                    style={{ color: C.white, fontSize: 14, fontWeight: "800" }}
+                  >
+                    Viagem {codigo || String(i + 1).padStart(3, "0")}
+                  </Text>
+                  <Text style={{ color: C.muted, fontSize: 12 }}>
+                    {formatISOStringToBR(v.dataViagem || v.data)}
+                  </Text>
+                </View>
+                <View style={{ alignItems: "flex-end", gap: 8 }}>
+                  <Pill
+                    text={String(
+                      v.viagemConcluida || v.viagemConcuida
+                        ? "CONCLUÍDA"
+                        : v.status || "CADASTRADA",
+                    )}
+                  />
+                  {canAssociate && codigo && (
+                    <Pressable
+                      disabled={isAssociating}
+                      onPress={() => associatePassenger(codigo)}
+                      style={{
+                        borderWidth: 1,
+                        borderColor: C.white,
+                        borderRadius: 10,
+                        paddingVertical: 8,
+                        paddingHorizontal: 10,
+                        opacity: isAssociating ? 0.6 : 1,
+                      }}
+                    >
+                      <Text style={{ color: C.white, fontSize: 11, fontWeight: "800" }}>
+                        {isAssociating ? "Associando..." : "Associar a mim"}
+                      </Text>
+                    </Pressable>
+                  )}
+                </View>
               </View>
-              <Pill
-                text={String(
-                  v.viagemConcuida ? "CONCLUÍDA" : v.status || "CADASTRADA",
-                )}
-              />
-            </View>
-          ))
+            );
+          })
         ) : (
           <View style={{ alignItems: "center", paddingVertical: 40, gap: 13 }}>
             <Ionicons name="calendar-outline" size={31} color={C.muted} />
@@ -406,6 +520,131 @@ export default function ViagensScreen() {
           </View>
         )}
       </Panel>
+
+      {canAssociate && (
+        <>
+          <SectionTitle
+            title="Minhas viagens"
+            caption="Viagens associadas à sua conta"
+          />
+          <Panel>
+            {associatedLoading ? (
+              <ActivityIndicator
+                color={C.white}
+                size="large"
+                style={{ marginVertical: 35 }}
+              />
+            ) : associatedError ? (
+              <Text
+                style={{ color: C.muted, lineHeight: 23, paddingVertical: 15 }}
+              >
+                {associatedError}
+              </Text>
+            ) : associatedItems.length ? (
+              associatedItems.map((v, i) => {
+                const codigo = String(v.codigoViagem || v.codigo || "");
+
+                return (
+                  <View
+                    key={codigo || i}
+                    style={{
+                      flexDirection: "row",
+                      gap: 16,
+                      alignItems: "center",
+                      paddingVertical: 20,
+                      borderBottomWidth:
+                        i < associatedItems.length - 1 ? 1 : 0,
+                      borderColor: C.line,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: "#272727",
+                        width: 45,
+                        height: 45,
+                        borderRadius: 12,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Ionicons
+                        name="checkmark-circle-outline"
+                        color={C.white}
+                        size={20}
+                      />
+                    </View>
+                    <View style={{ flex: 1, gap: 6 }}>
+                      <Text
+                        style={{
+                          color: C.white,
+                          fontSize: 14,
+                          fontWeight: "800",
+                        }}
+                      >
+                        Viagem {codigo || String(i + 1).padStart(3, "0")}
+                      </Text>
+                      <Text style={{ color: C.muted, fontSize: 12 }}>
+                        {formatISOStringToBR(v.dataViagem || v.data)}
+                      </Text>
+                    </View>
+                    <View style={{ alignItems: "flex-end", gap: 8 }}>
+                      <Pill
+                        text={String(
+                          v.viagemConcluida || v.viagemConcuida
+                            ? "CONCLUÍDA"
+                            : v.status || "ASSOCIADA",
+                        )}
+                      />
+                      {codigo && (
+                        <Pressable
+                          disabled={Boolean(cancellingCode || associatingCode)}
+                          onPress={() => confirmRemovePassenger(codigo)}
+                          style={{
+                            borderWidth: 1,
+                            borderColor: "#B86A6A",
+                            borderRadius: 10,
+                            paddingVertical: 8,
+                            paddingHorizontal: 10,
+                            opacity: cancellingCode === codigo ? 0.6 : 1,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "#E59A9A",
+                              fontSize: 11,
+                              fontWeight: "800",
+                            }}
+                          >
+                            {cancellingCode === codigo
+                              ? "Cancelando..."
+                              : "Cancelar associação"}
+                          </Text>
+                        </Pressable>
+                      )}
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <View
+                style={{ alignItems: "center", paddingVertical: 35, gap: 10 }}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={31}
+                  color={C.muted}
+                />
+                <Text style={{ color: C.white, fontWeight: "800" }}>
+                  Você ainda não está associado a nenhuma viagem.
+                </Text>
+                <Text style={{ color: C.muted, fontSize: 12 }}>
+                  Use o botão “Associar a mim” em uma viagem disponível.
+                </Text>
+              </View>
+            )}
+          </Panel>
+        </>
+      )}
     </Shell>
   );
 }
